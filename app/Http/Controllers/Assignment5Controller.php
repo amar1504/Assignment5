@@ -36,6 +36,7 @@ class Assignment5Controller extends Controller
     }
 
     function update_category(Request $request){
+        $this->validate($request,['categoryname'=>'required|alpha']);
         $data=['categoryname'=> $request->categoryname] ;       
         $row = DB::table('categories')->where('id','=' ,$request->id)->update($data);
         return $this->show_category();
