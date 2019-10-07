@@ -34,5 +34,10 @@ Route::get('hey',function(){
 Route::get('/contact','Contactcontroller@index');
 Route::post('/contactins','Contactcontroller@store')->name('contactstore');
 
-Route::get('/add_category','Assignment5Controller@index');
-Route::post('/list_category','Assignment5Controller@insert_category')->name('addcategory');
+Route::get('/category','Assignment5Controller@index')->name('category');
+Route::post('/add_category','Assignment5Controller@insert_category')->name('addcategory');
+Route::get('/edit_category/{id?}','Assignment5Controller@edit_category')->name('edit');
+Route::get('/delete/{id?}','Assignment5Controller@delete_category')->name('delete');
+Route::get('/list_category','Assignment5Controller@show_category');
+Route::post('/update_category','Assignment5Controller@update_category')->name('updatecategory');
+

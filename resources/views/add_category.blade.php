@@ -84,7 +84,7 @@
   </div>
 
   <!-- Content Section Start-->
-  <form method="POST" action="{{ route('addcategory') }}">
+  <form method="POST" action="{{ isset($id) ? route('updatecategory') : route('addcategory') }}">
   {{ csrf_field() }}
   <div class="section content_section">
 	<div class="container">
@@ -94,7 +94,8 @@
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Category Name</label>
-							<input name="categoryname" type="text"> 
+							<input name="categoryname" value="{{ isset($id) ? $row->categoryname : ''  }}" type="text"> 
+							<input name="id" value="{{ isset($id) ? $row->id : ''  }}" type="hidden"> 
 						</div>
 					</li>
 				</ul>
@@ -106,7 +107,11 @@
 				@endif
 				<div class="next_btn_block">
 					<div class="next_btn">
+						@if(isset($id))
+						<input type="submit" id="submit" name="update" value="Update">  <span><img src="{{ asset('images/small_triangle.png')}}" alt="small_triangle"> </span>
+						@else
 						<input type="submit" id="submit" name="submit" value="Submit">  <span><img src="{{ asset('images/small_triangle.png')}}" alt="small_triangle"> </span>
+						@endif
 					</div>
 				</div>
 			</div>
