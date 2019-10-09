@@ -94,7 +94,7 @@
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Category Name</label>
-							<input name="categoryname" value="{{ isset($id) ? $row->categoryname : ''  }}" type="text"> 
+							<input name="categoryname" value="{{ old('categoryname' , isset($id) ? $row->categoryname : '' )  }}" type="text"> 
 							<input name="id" value="{{ isset($id) ? $row->id : ''  }}" type="hidden"> 
 						</div>
 					</li>
@@ -299,5 +299,7 @@ Live a life without regrets and take action today!</p>
 		});
 	});
 </script>
+
+
 
 </body></html>

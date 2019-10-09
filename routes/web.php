@@ -40,4 +40,5 @@ Route::get('/edit_category/{id?}','Assignment5Controller@edit_category')->name('
 Route::get('/delete/{id?}','Assignment5Controller@delete_category')->name('delete');
 Route::get('/list_category','Assignment5Controller@show_category');
 Route::post('/update_category','Assignment5Controller@update_category')->name('updatecategory');
+Route::post('/delete_all_category','Assignment5Controller@deleteall_category')->name('deleteall');
 

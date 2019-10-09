@@ -89,6 +89,8 @@
   <div class="section content_section">
 	<div class="container">
 		<div class="filable_form_container">
+			<form method="POST" action="{{ route('deleteall') }}">
+			{{ csrf_field() }}
 			<div class="mange_buttons">
 				<ul>
 					<!--<li class="search_div">
@@ -98,7 +100,7 @@
 				 </div>
 					</li> -->
 					<li><a href="{{ route('category') }}">Create Category</a></li>
-					<li><a href="#">Delete</a></li>
+					<li><input type="submit" name="submit" id="submit" onClick="return confirm('Please confirm deletion');" value="Delete"></li>
 				</ul>
 			</div>
 			<div class="table_container_block">
@@ -106,7 +108,7 @@
 					<thead>
 						<tr>
 						<th width="10%">
-							<input type="checkbox" class="checkbox" id="checkbox_sample18"> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample18"></label>
+							<input type="checkbox" class="checkbox selectall" id="checkbox_sample18" onclick="selectall();"> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample18"></label>
 						</th>
 						<th style="width:60%">Name <!--<a href="#" class="sort_icon"><img src="images/sort.png"></a>--></th>
 						<th>Action</th>
@@ -116,7 +118,7 @@
 						@foreach($categories as $category)
 						<tr>
 							<td>
-								<input type="checkbox" class="checkbox" id="checkbox_sample19"> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample19"></label>
+								<input type="checkbox" name="checkbox[]" value="{{ $category->id }}" class="checkbox" id="checkbox_sample19"> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample19"></label>
 							</td>
 							<td>{{ $category->categoryname}}</td>
 							<td>
@@ -127,12 +129,15 @@
 							</td>
 						</tr>
 						@endforeach
-						
+						@if(count($categories)<=0)
+							<tr>
+							<?php echo "<td colspan=3><center><b>Record not found !</b></center></td>"; ?>
+							</tr>
+ 						@endif
 					</tbody>
 				</table>
 			</div>
-			
-
+			</form>
 		</div>
 	</div>		
   </div>
@@ -315,5 +320,32 @@ Live a life without regrets and take action today!</p>
 		});
 	});
 </script>
+
+
+<script>
+$(document).ready(function(){
+    $("#submit").prop("disabled", true); // disabled the delete field
+});
+
+//function to select the all checkbox -start
+function selectall(){
+    
+    if($(".selectall").is(":checked")){
+     //   alert("hii");
+        
+        $(".checkbox").prop('checked', true); // to select all checkbox
+        $("#submit").prop("disabled", false); // enabled the delete field
+
+    }
+    else{
+        $(".checkbox").prop('checked', false); // to disselect all checkbox
+		$("#submit").prop("disabled", true); // disabled the delete field
+
+    }
+
+}
+//function to select all checkbox-end
+</script>
+
 
 </body></html>
