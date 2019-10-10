@@ -1,8 +1,3 @@
-@if($errors->any())
-	@foreach($errors->all() as $error)
-		<li>{{ $error }}</li>
-	@endforeach
-@endif
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en" dir="ltr"><![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8 ie" lang="en" dir="ltr"><![endif]-->
@@ -35,7 +30,13 @@
 
 
 </head>
-
+<!-- to validate form -start -->
+@if($errors->any())
+	@foreach($errors->all() as $error)
+		<li>{{ $error }}</li>
+	@endforeach
+@endif
+<!-- to validate form -end -->
 <body>
 <!--wrapper-starts-->
 <div id="wrapper"> 
@@ -120,9 +121,11 @@
 							<label>Select Category</label>
 							<select name="category" name="category" class="select category" >
 								<option value="select">Select</option>
+								<!-- to fetch all categories -start -->
 								@foreach($categories as $category)
 									<option  value="{{ $category->id }}"  {{ isset($id) ? ($category->id == $row->category ? 'selected' : '' ) : '' }}  >{{  $category->categoryname }}</option>
 								@endforeach
+								<!-- to fetch all categories -end -->
 							</select>
 						</div>
 					</li>
