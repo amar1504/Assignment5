@@ -1,3 +1,8 @@
+@if($errors->any())
+	@foreach($errors->all() as $error)
+		<li>{{ $error }}</li>
+	@endforeach
+@endif
 <!DOCTYPE html>
 <!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7 ie" lang="en" dir="ltr"><![endif]-->
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8 ie" lang="en" dir="ltr"><![endif]-->
@@ -10,22 +15,22 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <link rel="shortcut icon" href="http://wireframes.php-dev.in/training/v1.2/php/assignment/favicon.ico">
 <title>Vital Partners Leading Dating and Introduction Agency in Sydney &amp; Canberra</title>
-<link href="add_product.blade_files/default.css" rel="stylesheet" type="text/css" media="all">
-<link href="add_product.blade_files/stylesheet.css" rel="stylesheet" type="text/css" media="all">
+<link href="{{ asset('css/default.css')}}" rel="stylesheet" type="text/css" media="all">
+<link href="{{ asset('css/stylesheet.css')}}" rel="stylesheet" type="text/css" media="all">
 <!--<link href="css/small-resolution.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/medium-resolution.css" rel="stylesheet" type="text/css" media="all">
 <link href="css/high-resolution.css" rel="stylesheet" type="text/css" media="all">-->
 
 <!-- jQuery library (served from Google) -->
-<script src="add_product.blade_files/jquery.js"></script>
+<script src="{{ asset('js/jquery.js')}}"></script>
 <!-- bxSlider Javascript file -->
-<script src="add_product.blade_files/jquery_003.js"></script>
-<script src="add_product.blade_files/script.js" type="text/javascript"></script>
+<script src="{{ asset('js/jquery_003.js') }}"></script>
+<script src="{{ asset('js/script.js') }}" type="text/javascript"></script>
 
 <!-- bxSlider CSS file -->
-<link href="add_product.blade_files/jquery.css" rel="stylesheet">
+<link href="{{ asset('css/jquery.css') }}" rel="stylesheet">
 <!-- Responsive -->
-<link href="add_product.blade_files/responsive.css" rel="stylesheet">
+<link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
 
 
 
@@ -42,7 +47,7 @@
 
 		<div class="Logo_Cont left"><!--Logo_Cont Start-->
                     	
-           <a href="http://wireframes.php-dev.in/training/v1.2/php/assignment/index.html"><img src="add_product.blade_files/logo.png" alt=""></a>
+           <a href="http://wireframes.php-dev.in/training/v1.2/php/assignment/index.html"><img src="{{ asset('images/logo.png')}}" alt=""></a>
         
         </div><!--Logo_Cont End-->
 		
@@ -79,12 +84,15 @@
 
   <div class="section banner_section who_we_help">
   	<div class="container">
-  		<h4>Create Category</h4>
+  		<h4>Create Product</h4>
   	</div>
   </div>
 
   <!-- Content Section Start-->
-  <div class="section content_section">
+  <form method="post" action="{{ isset($id) ? route('updateproduct') : route('addproduct')  }}"  enctype="multipart/form-data">
+  {{ csrf_field()}}
+
+    <div class="section content_section">
 	<div class="container">
 		<div class="filable_form_container">
 			<div class="form_container_block">
@@ -92,40 +100,48 @@
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Product Name</label>
-							<input name="firstname" type="text"> 
+							<input name="productname"  value="{{ old('productname',isset($id) ? $row->productname : ''  ) }}" type="text"> 
 						</div>
 					</li>
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Product Price</label>
-							<input name="price" type="text"> 
+							<input name="productprice" value="{{old('productprice', isset($id) ?  $row->productprice : '' )}}" type="text"> 
 						</div>
 					</li>
 					<li class="fileds">
 						<div class="upload_fileds">
 							<label>Upload Image</label>
-							<input id="uploadFile" type="file" placeholder="Choose File" class="mandatory_fildes">
+							<input id="uploadFile" name="productimage" type="file" placeholder="Choose File" class="mandatory_fildes">
 						</div>						
 					</li>
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Select Category</label>
-							<select name="category" class="select category" style="z-index: 10; opacity: 0;">
-								<option value="mobile" selected="selected">Mobile</option>
-								<option value="automobile">Automobile</option>
-							</select><span class="select">Mobile</span> 
+							<select name="category" name="category" class="select category" >
+								<option value="select">Select</option>
+								@foreach($categories as $category)
+									<option  value="{{ $category->id }}"  {{ isset($id) ? ($category->id == $row->category ? 'selected' : '' ) : '' }}  >{{  $category->categoryname }}</option>
+								@endforeach
+							</select>
 						</div>
 					</li>
 				</ul>
 				<div class="next_btn_block">
 					<div class="next_btn">
-						<a href="#">Submit  <span><img src="add_product.blade_files/small_triangle.png" alt="small_triangle"> </span></a>
+						@if(isset($id))
+						<input type="submit" name="update" id="submit" value="Update">  <span><img src="{{ asset('images/small_triangle.png')}}" alt="small_triangle"> </span>
+						@else
+						<input type="submit" name="submit" id="submit" value="Submit">  <span><img src="{{ asset('images/small_triangle.png')}}" alt="small_triangle"> </span>
+						@endif
+						<input type="hidden" name="id" value={{ isset($id) ? $id : '' }}>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>		
   </div>
+  </form>
   <!-- Content Section End-->
 
 
@@ -136,7 +152,7 @@
 	<div class="container"><!--container Start-->
 		
 		<div class="Download_Cont_Top_Left left"><!--Download_Cont_Top Start-->
-			<img src="add_product.blade_files/icon5.png" alt=""> <h1 style="display:inline;">FREE: Men Are From Mars</h1> <a href="#">Download Now</a>
+			<img src="{{asset('images/icon5.png')}}" alt=""> <h1 style="display:inline;">FREE: Men Are From Mars</h1> <a href="#">Download Now</a>
 
 		</div><!--Download_Cont_Top End-->	
 		
@@ -154,7 +170,7 @@
 		
 		<div class="Footer_Cont_Top clearfix"><!--Footer_Cont_Top Start-->
 
-			<span class="left"><img src="add_product.blade_files/foot_logo.png" alt=""></span>
+			<span class="left"><img src="{{ asset('images/foot_logo.png')}}" alt=""></span>
 			<p class="right">Shortcut your search to happiness right now. 
 Live a life without regrets and take action today!</p>
 		</div><!--Footer_Cont_Top End-->
@@ -162,8 +178,8 @@ Live a life without regrets and take action today!</p>
 		<div class="Footer_Cont_Top2 clearfix"><!--Footer_Cont_Top2 Start-->
 
 			<h1>Call Us Today! (02) 9017 8413</h1>
-			 <a href="#">Book an Appointment <img src="add_product.blade_files/icon7.png" alt=""></a>
- 			 <a href="#">Contact a Consultant <img src="add_product.blade_files/icon6.png" alt=""></a>
+			 <a href="#">Book an Appointment <img src="{{ asset('images/icon7.png')}}" alt=""></a>
+ 			 <a href="#">Contact a Consultant <img src="{{ asset('images/icon6.png')}}" alt=""></a>
 		</div><!--Footer_Cont_Top2 End-->
 		
 		<div class="Footer_Cont_Top3 clearfix"><!--Footer_Cont_Top3 Start-->
@@ -293,7 +309,7 @@ Live a life without regrets and take action today!</p>
 
 <!--wrapper-starts-->
 
-<script type="text/javascript" src="add_product.blade_files/jquery_002.js"></script>	
+<script type="text/javascript" src="{{ asset('js/jquery_002.js')}}"></script>	
 <script type="text/javascript">
 	$(document).ready(function(){
 		$('.select').each(function(){

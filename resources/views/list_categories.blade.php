@@ -115,6 +115,7 @@
 						</tr>
 					</thead>
 					<tbody>
+						<!-- fetch the categories for listing -start -->
 						@foreach($categories as $category)
 						<tr>
 							<td>
@@ -123,17 +124,21 @@
 							<td>{{ $category->categoryname}}</td>
 							<td>
 								<div class="buttons">
-								  <a href="{{ route('delete',$category->id) }}" class="btn btn_edit">Delete</a>
-								  <a href="{{ route('edit',$category->id) }}" class="btn btn_delete">Edit</a>
+								<a href="{{ route('edit',$category->id) }}" class="btn btn_delete">Edit</a>
+								<a href="{{ route('delete',$category->id) }}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
 								</div>								
 							</td>
 						</tr>
 						@endforeach
+						<!-- fetch the categories for listing -end -->
+
+						<!-- to check the records are available in db or not if not then show record not found -start -->
 						@if(count($categories)<=0)
 							<tr>
 							<?php echo "<td colspan=3><center><b>Record not found !</b></center></td>"; ?>
 							</tr>
  						@endif
+						<!-- to check the records are available in db or not if not then show record not found -end -->
 					</tbody>
 				</table>
 			</div>
