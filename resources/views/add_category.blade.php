@@ -79,7 +79,7 @@
 
   <div class="section banner_section who_we_help">
   	<div class="container">
-  		<h4>Create Category</h4>
+  		<h4>{{ isset($id) ? 'Edit Category' : 'Create Category' }}</h4>
   	</div>
   </div>
 
@@ -99,12 +99,14 @@
 						</div>
 					</li>
 				</ul>
-
+				<!-- to validate form -start -->
 				@if($errors->any())
 					@foreach($errors->all() as $error)
 						<li>{{ $error }}</li>
 					@endforeach
 				@endif
+				<!-- to validate form -end -->
+
 				<div class="next_btn_block">
 					<div class="next_btn">
 						@if(isset($id))
