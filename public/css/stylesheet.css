@@ -830,3 +830,6 @@ ul.bxslider1 .image_block img{ border: medium none; border-radius: 0; display: i
 
 .spancondition{ color:green; text-align:center; padding:2%; font-size: 15px;}
 
+.pagination li{	display:inline-block; }
+
+.pagination .active{ background-color: #a8ce38; color: #fff; border-color: #a8ce38; padding: 5px 10px; border: 1px solid #a8ce38; display: inline-block; border-radius: 3px; font-family: 'roboto_slabregular'; line-height: 16px; font-size: 14px; text-decoration: none; width: 30px; }

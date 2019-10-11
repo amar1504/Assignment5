@@ -33,7 +33,6 @@
 <!-- to validate form -start -->
 @if($errors->any())
 	@foreach($errors->all() as $error)
-		<li>{{ $error }}</li>
 	@endforeach
 @endif
 <!-- to validate form -end -->
@@ -90,7 +89,7 @@
   </div>
 
   <!-- Content Section Start-->
-  <form method="post" action="{{ isset($id) ? route('updateproduct') : route('addproduct')  }}"  enctype="multipart/form-data">
+  <form method="post" action="{{ isset($id) ? route('product.update') : route('product.add')  }}"  enctype="multipart/form-data">
   {{ csrf_field()}}
 
     <div class="section content_section">
@@ -102,31 +101,36 @@
 						<div class="name_fileds">
 							<label>Product Name</label>
 							<input name="productname"  value="{{ old('productname',isset($id) ? $row->productname : ''  ) }}" type="text"> 
+							@if($errors->has('productname')) {{ $errors->first('productname') }} @else {{''}} @endif
 						</div>
 					</li>
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Product Price</label>
 							<input name="productprice" value="{{old('productprice', isset($id) ?  $row->productprice : '' )}}" type="text"> 
+							@if($errors->has('productprice')) {{ $errors->first('productprice') }} @else {{''}} @endif
 						</div>
 					</li>
 					<li class="fileds">
 						<div class="upload_fileds">
 							<label>Upload Image</label>
 							<input id="uploadFile" name="productimage" type="file" placeholder="Choose File" class="mandatory_fildes">
+							<br/>@if($errors->has('productimage')) {{ $errors->first('productimage') }} @else {{''}} @endif
 						</div>						
 					</li>
 					<li class="fileds">
 						<div class="name_fileds">
 							<label>Select Category</label>
 							<select name="category" name="category" class="select category" >
-								<option value="select">Select</option>
+								<option value="">Select</option>
 								<!-- to fetch all categories -start -->
 								@foreach($categories as $category)
 									<option  value="{{ $category->id }}"  {{ isset($id) ? ($category->id == $row->category ? 'selected' : '' ) : '' }}  >{{  $category->categoryname }}</option>
 								@endforeach
 								<!-- to fetch all categories -end -->
 							</select>
+							@if($errors->has('category')) {{ $errors->first('category') }} @else {{''}} @endif
+							
 						</div>
 					</li>
 				</ul>

@@ -30,6 +30,12 @@
 
 
 </head>
+<!-- to validate form -start -->
+@if($errors->any())
+	@foreach($errors->all() as $error)
+	@endforeach
+@endif
+<!-- to validate form -end -->
 
 <body>
 <!--wrapper-starts-->
@@ -84,7 +90,7 @@
   </div>
 
   <!-- Content Section Start-->
-  <form method="POST" action="{{ isset($id) ? route('updatecategory') : route('addcategory') }}">
+  <form method="POST" action="{{ isset($id) ? route('category.update') : route('category.add') }}">
   {{ csrf_field() }}
   <div class="section content_section">
 	<div class="container">
@@ -95,17 +101,12 @@
 						<div class="name_fileds">
 							<label>Category Name</label>
 							<input name="categoryname" value="{{ old('categoryname' , isset($id) ? $row->categoryname : '' )  }}" type="text"> 
+							@if($errors->has('categoryname')) {{ $errors->first('categoryname') }} @else {{''}} @endif
+
 							<input name="id" value="{{ isset($id) ? $row->id : ''  }}" type="hidden"> 
 						</div>
 					</li>
 				</ul>
-				<!-- to validate form -start -->
-				@if($errors->any())
-					@foreach($errors->all() as $error)
-						<li>{{ $error }}</li>
-					@endforeach
-				@endif
-				<!-- to validate form -end -->
 
 				<div class="next_btn_block">
 					<div class="next_btn">
@@ -131,7 +132,7 @@
 	<div class="container"><!--container Start-->
 		
 		<div class="Download_Cont_Top_Left left"><!--Download_Cont_Top Start-->
-			<img src="{{ ('images/icon5.png')}}" alt=""> <h1 style="display:inline;">FREE: Men Are From Mars</h1> <a href="#">Download Now</a>
+			<img src="{{ asset('images/icon5.png')}}" alt=""> <h1 style="display:inline;">FREE: Men Are From Mars</h1> <a href="#">Download Now</a>
 
 		</div><!--Download_Cont_Top End-->	
 		

@@ -89,7 +89,7 @@
   <div class="section content_section">
 	<div class="container">
 		<div class="filable_form_container">
-			<form method="POST" action="{{ route('deleteall') }}">
+			<form method="POST" action="{{ route('category.deleteall') }}">
 			{{ csrf_field() }}
 			<div class="mange_buttons">
 				<ul>
@@ -124,8 +124,8 @@
 							<td>{{ $category->categoryname}}</td>
 							<td>
 								<div class="buttons">
-								<a href="{{ route('edit',$category->id) }}" class="btn btn_delete">Edit</a>
-								<a href="{{ route('delete',$category->id) }}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
+								<a href="{{ route('category.edit',$category->id) }}" class="btn btn_delete">Edit</a>
+								<a href="{{ route('category.delete',$category->id) }}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
 								</div>								
 							</td>
 						</tr>
@@ -143,6 +143,13 @@
 				</table>
 			</div>
 			</form>
+			<!-- pagination -start -->
+			<div class="pagination_listing">
+				<ul>
+					<li class="disp">{{$categories->links()}}</li>
+				</ul>
+			</div>
+			<!-- pagination -start -->
 		</div>
 	</div>		
   </div>

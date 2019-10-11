@@ -27,22 +27,22 @@ class Assignment5Controller extends Controller
 
 
     // function to insert category -start
-    function insert_category(Request $request){
+    function insertCategory(Request $request){
         $this->validate($request,['categoryname'=>'required|alpha']);
         
         //dd($request->all());
         $category= new Category();
         $category->categoryname=$request->categoryname;
         $category->save();
-        return redirect()->route('listcategory');
+        return redirect()->route('category.list');
     }
     // function to insert category -end
 
 
     // function to show all categories -start
-    function show_category(){
+    function showCategory(){
 
-        $categories = DB::table('categories')->orderByRaw('id DESC')->get();
+        $categories = DB::table('categories')->orderByRaw('id DESC')->paginate(2);
         return view('list_categories',['categories'=>$categories]);
 
     }
@@ -50,7 +50,7 @@ class Assignment5Controller extends Controller
 
 
     // function to fetch the category  detail -start
-    function edit_category($id){
+    function editCategory($id){
         $row = DB::table('categories')->where('id','=' ,$id)->first();
         return view('add_category',['row'=>$row,'id'=>$id]);
     }
@@ -58,41 +58,43 @@ class Assignment5Controller extends Controller
 
 
     // function to update the category  -start
-    function update_category(Request $request){
+    function updateCategory(Request $request){
         $this->validate($request,['categoryname'=>'required|alpha']);
         $data=['categoryname'=> $request->categoryname] ;       
         $row = DB::table('categories')->where('id','=' ,$request->id)->update($data);
-        return redirect()->route('listcategory');
+        return redirect()->route('category.list');
 
     }
     // function to update the category  -end
 
 
     // function to delete the category  -start
-    function delete_category($id){
+    function deleteCategory($id){
         DB::table('categories')->where('id', '=', $id)->delete();
-        return redirect()->route('listcategory');
+        return redirect()->route('category.list');
 
     }
     // function to delete the category  -end
 
 
     // function to delete all selected the category  -start
-    function deleteall_category(Request $request){
+    function deleteallCategory(Request $request){
         //print_r($request->checkbox);  
         for($i=0; $i<count($request->checkbox); $i++){
             DB::table('categories')->where('id', '=', $request->checkbox[$i])->delete();
         }
-        return redirect()->route('listcategory');
+        return redirect()->route('category.list');
 
     }
     // function to delete all selected the category  -end
 
 
     // function to insert the product  -start
-    function insert_product(Request $request)
+    function insertProduct(Request $request)
     {
-        $this->validate($request,['productname'=>'required']);
+      //  $this->validate($request,['productname'=>'required']);
+        $this->validate($request,['productname'=>'required|alpha','productprice'=>'required|numeric','category'=>'required','productimage'=>'image|max:2048']);
+
         if($request->productimage==""){
             $image=$request->productimage='';
         }
@@ -102,25 +104,25 @@ class Assignment5Controller extends Controller
         }
         $data=['productname'=>$request->productname,'productprice'=>$request->productprice,'productimage'=>$image,'category'=>$request->category];
         DB::table('products')->insert($data);
-        return redirect()->route('listproduct');
+        return redirect()->route('product.list');
     }
     // function to insert the product  -end
 
 
     // function to show all products  -start
-    function show_product(){
+    function showProduct(){
         $products= DB::table('products')
                 ->join('categories', 'products.category', '=', 'categories.id')
                 ->select('products.*', 'categories.categoryname as categoryname')
                 ->orderBYRaw('id DESC')
-                ->get();
+                ->paginate(2);
         return view('list_products',['products'=>$products]);
     }
     // function to show all products -end
 
 
     // function to fetch product detail  -start
-    function edit_product($id){
+    function editProduct($id){
         $row = DB::table('products')->where('id','=' ,$id)->first();
         $categories = DB::table('categories')->orderByRaw('id DESC')->get();
         return view('add_product',['row'=>$row,'id'=>$id,'categories'=>$categories]);
@@ -130,7 +132,8 @@ class Assignment5Controller extends Controller
 
 
     // function to update the product detail -start
-    function update_product(Request $request){
+    function updateProduct(Request $request){
+        $this->validate($request,['productname'=>'required|alpha','productprice'=>'required|numeric','category'=>'required','productimage'=>'image|max:2048']);
         $pimage = DB::table('products')->where('id','=' ,$request->id)->first();
         if($request->productimage==""){
             $image=$pimage->productimage;
@@ -143,26 +146,26 @@ class Assignment5Controller extends Controller
         
         $data=['productname'=>$request->productname,'productprice'=>$request->productprice,'productimage'=>$image,'category'=>$request->category];       
         $row = DB::table('products')->where('id','=' ,$request->id)->update($data);
-        return redirect()->route('listproduct');
+        return redirect()->route('product.list');
     }
     // function to update the product detail  -end
 
 
     // function to delete product -start
-    function delete_product($id){
+    function deleteProduct($id){
         DB::table('products')->where('id', '=', $id)->delete();
-        return redirect()->route('listproduct');
+        return redirect()->route('product.list');
     }
     // function to delete product  -end
 
     
     // function to delete all selected products -start
-    function deleteall_product(Request $request){
+    function deleteallProduct(Request $request){
         //print_r($request->checkbox);  
         for($i=0; $i<count($request->checkbox); $i++){
             DB::table('products')->where('id', '=', $request->checkbox[$i])->delete();
         }
-        return redirect()->route('listproduct');
+        return redirect()->route('product.list');
     }
     // function to delete all selected products -end
 

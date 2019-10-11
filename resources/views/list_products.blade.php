@@ -28,7 +28,6 @@
 <link href="{{ asset('css/responsive.css') }}" rel="stylesheet">
 
 
-
 </head>
 
 <body>
@@ -87,7 +86,7 @@
   <div class="section content_section">
 	<div class="container">
 		<div class="filable_form_container">
-			<form method="POST" action="{{route('deleteallproduct')}}">
+			<form method="POST" action="{{route('product.deleteall')}}">
 			{{ csrf_field() }}
 			<div class="mange_buttons">
 				<ul>
@@ -128,8 +127,8 @@
 							<td>{{$product->categoryname}}</td>
 							<td>
 								<div class="buttons">
-								  <a  href="{{ route('editproduct',$product->id)}}"  class="btn btn_delete ">Edit</a>
-								  <a href="{{ route('deleteproduct',$product->id)}}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
+								  <a  href="{{ route('product.edit',$product->id)}}"  class="btn btn_delete ">Edit</a>
+								  <a href="{{ route('product.delete',$product->id)}}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
 								</div>								
 							</td>
 						</tr>
@@ -148,17 +147,13 @@
 				</table>
 			</div>
 			</form>
-			<!--<div class="pagination_listing">
+			<!-- pagination -start -->
+			<div class="pagination_listing">
 				<ul>
-					<li><a href="#">first</a></li>
-					<li><a href="#">1</a></li>
-					<li><a href="#">2</a></li>
-					<li><a href="#">3</a></li>
-					<li><a href="#">4</a></li>
-					<li><a href="#">Last</a></li>
+					<li class="disp">{{$products->links()}}</li>
 				</ul>
-			</div>-->
-
+			</div>
+			<!-- pagination -end -->
 		</div>
 	</div>		
   </div>
