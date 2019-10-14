@@ -21,3 +21,24 @@ $factory->define(App\User::class, function (Faker $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+//factory function for Model Category -start
+$factory->define(App\Category::class, function (Faker $faker) {
+    return [
+        'categoryname' => $faker->name,
+        'created_at'=>date("Y-m-d H:i:s"),
+        'updated_at'=>date("Y-m-d H:i:s"),
+    ];
+});
+//factory function for Model Category -end
+
+//factory function for Model Product -start
+$factory->define(App\Product::class, function (Faker $faker) {
+    return [
+        'productname' => $faker->name,
+        'productprice' =>$faker->randomFloat(),
+        'productimage' => '',
+        'category' => $faker->randomDigit,
+    ];
+});
+//factory function for Model Product -end
