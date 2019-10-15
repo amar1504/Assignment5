@@ -9,4 +9,7 @@ class Category extends Model
     //public $timestamps = false;
     protected $table="categories";
     protected $fillable = ['id','categoryname','created_at','updated_at'];
+    public function categoryProduct() {
+        return $this->hasMany( Product::class, 'category' );
+    }
 }

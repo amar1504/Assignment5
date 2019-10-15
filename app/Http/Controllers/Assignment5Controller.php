@@ -7,6 +7,8 @@ use App\Category; // used model Category
 use App\Product; // used model product
 use DB;
 use Validator; 
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\StoreBlogPostProduct;
 use Illuminate\Support\Facades\Storage; 
 class Assignment5Controller extends Controller
 {
@@ -27,22 +29,17 @@ class Assignment5Controller extends Controller
 
 
     // function to insert category -start
-    function insertCategory(Request $request){
+    function insertCategory(UserStoreRequest $request){
         //$this->validate($request,['categoryname'=>'required|alpha']);
-        
-        $validator = Validator::make($request->all(), [ 
-            'categoryname' => 'required|alpha',
-        ]);
-        if ($validator->fails()) {
-                    return back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $validated = $request->validated();
 
         //dd($request->all());
-        $category= new Category();
+        /* $category= new Category();
         $category->categoryname=$request->categoryname;
         $category->save();
+        */
+        Category::create(['categoryname'=>$request->categoryname]);
+
         return redirect()->route('category.list');
     }
     // function to insert category -end
@@ -52,7 +49,8 @@ class Assignment5Controller extends Controller
     function showCategory(){
 
        // $categories = DB::table('categories')->orderByRaw('id DESC')->paginate(2);
-        $categories = Category::orderByRaw('id DESC')->paginate(2);
+        $categories = Category::with('categoryProduct')->withCount('categoryProduct')->orderByRaw('id DESC')->paginate(2);
+       //dd($categories);
         return view('list_categories',['categories'=>$categories]);
     }
     // function to show all categories -end
@@ -68,16 +66,9 @@ class Assignment5Controller extends Controller
 
 
     // function to update the category  -start
-    function updateCategory(Request $request){
+    function updateCategory(UserStoreRequest $request){
         // $this->validate($request,['categoryname'=>'required|alpha']);
-        $validator = Validator::make($request->all(), [ 
-            'categoryname' => 'required|alpha',
-        ]);
-        if ($validator->fails()) {
-                    return back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $validated = $request->validated();
         // $data=['categoryname'=> $request->categoryname] ;       
         // $row = DB::table('categories')->where('id','=' ,$request->id)->update($data);
 
@@ -93,7 +84,7 @@ class Assignment5Controller extends Controller
 
     // function to delete the category  -start
     function deleteCategory($id){
-       // DB::table('categories')->where('id', '=', $id)->delete();
+        // DB::table('categories')->where('id', '=', $id)->delete();
         Category::where('id', '=', $id)->delete();
         return redirect()->route('category.list');
 
@@ -115,20 +106,11 @@ class Assignment5Controller extends Controller
 
 
     // function to insert the product  -start
-    function insertProduct(Request $request)
+    function insertProduct(StoreBlogPostProduct $request)
     {
         // $this->validate($request,['productname'=>'required|alpha','productprice'=>'required|numeric','category'=>'required','productimage'=>'image|max:2048']);
-        $validator = Validator::make($request->all(), [ 
-            'productname'=>'required|alpha',
-            'productprice'=>'required|numeric',
-            'category'=>'required',
-            'productimage'=>'image|max:2048'
-        ]);
-        if ($validator->fails()) {
-                    return back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $validated = $request->validated();
+
         if($request->productimage==""){
             $image=$request->productimage='';
         }
@@ -179,19 +161,9 @@ class Assignment5Controller extends Controller
 
 
     // function to update the product detail -start
-    function updateProduct(Request $request){
+    function updateProduct(StoreBlogPostProduct $request){
         // $this->validate($request,['productname'=>'required|alpha','productprice'=>'required|numeric','category'=>'required','productimage'=>'image|max:2048']);
-        $validator = Validator::make($request->all(), [ 
-            'productname'=>'required|alpha',
-            'productprice'=>'required|numeric',
-            'category'=>'required',
-            'productimage'=>'image|max:2048'
-        ]);
-        if ($validator->fails()) {
-                    return back()
-                        ->withErrors($validator)
-                        ->withInput();
-        }
+        $validated = $request->validated();
         
         // $pimage = DB::table('products')->where('id','=' ,$request->id)->first();
         $pimage = Product::where('id','=' ,$request->id)->first();

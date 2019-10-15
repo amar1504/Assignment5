@@ -10,4 +10,8 @@ class Product extends Model
     protected $table="products";
     protected $fillable=['id','productname','productprice','productimage','category'];
     
+    public function productCategory() {
+        return $this->belongsTo(Category::class, 'id' );
+    }
+
 }

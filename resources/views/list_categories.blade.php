@@ -121,11 +121,11 @@
 							<td>
 								<input type="checkbox" name="checkbox[]" value="{{ $category->id }}" class="checkbox" id="checkbox_sample19"> <label class="css-label mandatory_checkbox_fildes" for="checkbox_sample19"></label>
 							</td>
-							<td>{{ $category->categoryname}}</td>
+							<td>{{ $category->categoryname}} </td>
 							<td>
 								<div class="buttons">
 								<a href="{{ route('category.edit',$category->id) }}" class="btn btn_delete">Edit</a>
-								<a href="{{ route('category.delete',$category->id) }}" onClick="return confirm('Please confirm deletion');" class="btn btn_edit">Delete</a>
+								<a  @if($category->category_product_count >0 ) onClick="return alert('Products are available in this category. You can\'t delete this category');" @else href="{{ route('category.delete',$category->id) }}" onClick="return confirm('Please confirm deletion');" @endif class="btn btn_edit">Delete</a>
 								</div>								
 							</td>
 						</tr>
